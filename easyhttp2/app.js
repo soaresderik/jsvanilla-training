@@ -10,14 +10,14 @@ const data = {
     email: 'andre@gmail.com'
 }
 
-// http.post('https://jsonplaceholder.typicode.com/posts/1', data)
+// http.post('https://jsonplaceholder.typicode.com/users', data)
 //     .then(data => console.log(data))
 //     .catch(err => console.log(err));
 
-// http.put('https://jsonplaceholder.typicode.com/users/2', data)
-//     .then(data => console.log(data))
-//     .catch(err => console.log(err));
+http.put('https://jsonplaceholder.typicode.com/users/2', data)
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
 
-http.delete('https://jsonplaceholder.typicode.com/users/2')
+http.delete('https://jsonplaceholder.typicode.com/users/2', data)
     .then(data => console.log(data))
     .catch(err => console.log(err));
