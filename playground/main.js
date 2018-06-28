@@ -1,34 +1,55 @@
-const posts = [
-    {title: 'Post One', body: 'Este é o post um'},
-    {title: 'Post Two', body: 'Este é o post dois'}
-];
+document.getElementById('button1').addEventListener('click', getText);
+document.getElementById('button2').addEventListener('click', getJson);
+document.getElementById('button3').addEventListener('click', getAPI);
 
-function createPost(post){
-    return new Promise(function(resolve, reject){
-        setTimeout(function(){
-            posts.push(post);
-            const error = true;
-            if(error){
-              resolve();
-            }else{
-              reject('Error: Ops! Algo deu errado :-(');
-            }
-        }, 2000);
+function getText(){
+    fetch('text1.txt')
+    .then(function(res){
+        return res.text();
+    })
+    .then(function(data){
+        console.log(data);
+        document.getElementById('output').innerHTML = data;
+    })
+    .catch(function(err){
+        console.log(err);
     });
 }
 
-function getPost(){
-    setTimeout(function(){
+function getJson(){
+    fetch('posts.json')
+    .then(function(res){
+        return res.json();
+    })
+    .then(function(data){
+        console.log(data);
         let output = '';
-        posts.forEach(function(post){
+        data.forEach(function(post){
             output += `<li>${post.title}</li>`
         });
-        document.body.innerHTML = output;
-    }, 1000);
+
+        document.getElementById('output').innerHTML = output;
+    })
+    .catch(function(err){
+        console.log(err);
+    });
 }
 
-createPost({title: 'Post Three', body: 'Este é o terceiro post'})
-        .then(getPost)
-        .catch(function(err){
-            console.log(err);
+function getAPI(){
+    fetch('https://api.github.com/users')
+    .then(function(res){
+        return res.json();
+    })
+    .then(function(data){
+        console.log(data);
+        let output = '';
+        data.forEach(function(user){
+            output += `<li>${user.login}</li>`
         });
+
+        document.getElementById('output').innerHTML = output;
+    })
+    .catch(function(err){
+        console.log(err);
+    });
+}
