@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <title>Ajax Playground</title>
+    <title>Piadas do Chuck Norris</title>
 </head>
 <body>
     <div class="container">
-        <button id="button1">Cliente</button>
-        <button id="button2">Clientes</button>
-        <br><br>
-        <h1>Cliente</h1>
-        <div id="customer"></div>
-        <h1>Clientes</h1>
-        <div id="customers"></div>
+        <h2>Gerador de piadas do Chuck Norris</h2>
+        <form>
+            <div>
+                <label>Nº de Piadas</label>
+                <input type="number" id="number" />
+            </div>
+            <div>
+                <button class="get-jokes">Buscar</button>
+            </div>
+        </form>
+        <ul class="jokes"></ul>
     </div>
     <script src="main.js"></script>
 </body>

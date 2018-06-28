@@ -1,84 +1,29 @@
-document.getElementById('button1').addEventListener('click', loadCustomer);
-document.getElementById('button2').addEventListener('click', loadCustomers);
+document.querySelector('.get-jokes').addEventListener('click', getJokes);
 
-function loadCustomer(e){
+function getJokes(e){
+    const number = document.querySelector('input[type="number"]').value;
+
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'customer.json', true);
+    xhr.open('GET', `https://api.icndb.com/jokes/random/${number}`, true);
 
     xhr.onload = function(){
         if(this.status === 200){
-            const customer = JSON.parse(this.responseText);
-            const output = `
-                <ul>
-                    <li>#${customer.id}</li>
-                    <li>Nome: ${customer.name}</li>
-                    <li>Empresa: ${customer.company}</li>
-                    <li>Nome: ${customer.phone}</li>
-                </ul>
-            `;
-
-            document.getElementById('customer').innerHTML = output;
-        }
-    }
-
-    xhr.send();
-
-     /* 
-       ------ Status HTTP ------
-       200: OK
-       403: Forbidenn
-
-       ------ Ready State ------
-       0: request not initialized
-       1: server connection estabilished
-       2: request received
-       3: processing request
-       4: process finished and response is ready
-
-    */
-}
-
-
-function loadCustomers(e){
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'customers.json', true);
-
-    xhr.onload = function(){
-        if(this.status === 200){
-            const customers = JSON.parse(this.responseText);
+            const response = JSON.parse(this.responseText);
             let output = '';
+            if(response.type === 'success'){
+                response.value.forEach(function(data){
+                    output += `<li>${data.joke}</li>`
+                });
+            }else{
+                output += '<li>Opps! Algo deu errado :( </li>'
+            }
 
-            customers.forEach(customer => {
-                output += `
-                    <ul>
-                        <li>#${customer.id}</li>
-                        <li>Nome: ${customer.name}</li>
-                        <li>Empresa: ${customer.company}</li>
-                        <li>Nome: ${customer.phone}</li>
-                    </ul>
-                `;
-            });
-            
-
-            document.getElementById('customers').innerHTML = output;
+            document.querySelector('.jokes').innerHTML = output;
         }
     }
 
     xhr.send();
 
-     /* 
-       ------ Status HTTP ------
-       200: OK
-       403: Forbidenn
-
-       ------ Ready State ------
-       0: request not initialized
-       1: server connection estabilished
-       2: request received
-       3: processing request
-       4: process finished and response is ready
-
-    */
+    e.preventDefault();
 }
