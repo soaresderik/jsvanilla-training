@@ -3,34 +3,18 @@ const posts = [
     {title: 'Post Two', body: 'Este é o post dois'}
 ];
 
-// function createPost(post){
-//     setTimeout(function(){
-//         console.log('passou aqui');
-//         posts.push(post)
-//     }, 5000);
-// }
-
-// function getPost(){
-//     setTimeout(function(){
-//         let output = '';
-//         posts.forEach(function(post){
-//             output += `<li>${post.title}</li>`
-//         });
-
-//         document.body.innerHTML = output;
-//     }, 2500);
-// }
-
-// createPost({title: 'Post Three', body: 'Este é o terceiro post'});
-
-// getPost();
-
-function createPost(post, callback){
-    setTimeout(function(){
-        console.log('passou aqui');
-        posts.push(post)
-        callback();
-    }, 4000);
+function createPost(post){
+    return new Promise(function(resolve, reject){
+        setTimeout(function(){
+            posts.push(post);
+            const error = true;
+            if(error){
+              resolve();
+            }else{
+              reject('Error: Ops! Algo deu errado :-(');
+            }
+        }, 2000);
+    });
 }
 
 function getPost(){
@@ -40,7 +24,11 @@ function getPost(){
             output += `<li>${post.title}</li>`
         });
         document.body.innerHTML = output;
-    }, 2000);
+    }, 1000);
 }
 
-createPost({title: 'Post Three', body: 'Este é o terceiro post'}, getPost);
+createPost({title: 'Post Three', body: 'Este é o terceiro post'})
+        .then(getPost)
+        .catch(function(err){
+            console.log(err);
+        });
