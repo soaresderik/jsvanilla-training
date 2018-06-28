@@ -6,6 +6,48 @@ class Book {
     }
 }
 
+class Store {
+    static getBooks(){
+        let books;
+        if(localStorage.getItem('books') === null){
+            books = [];
+        } else {
+          books = JSON.parse(localStorage.getItem('books')); 
+        }
+
+        return books;
+    }
+
+    static displayBooks(){
+        const books = Store.getBooks();
+
+        books.forEach(function(book){
+            const ui = new UI;
+            ui.addBookToList(book);
+        });
+    }
+
+    static addBook(book){
+        const books = Store.getBooks();
+
+        books.push(book);
+
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+
+    static removeBook(isbn){
+        const books = Store.getBooks();
+
+        books.forEach(function(book, index){
+            if(book.isbn === isbn){
+                books.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('books', JSON.stringify(books)); 
+    }
+}
+
 class UI {
     addBookToList(book){
         const list = document.getElementById('book-list');
@@ -51,6 +93,8 @@ class UI {
 }
 
 
+document.addEventListener('DOMContentLoaded', Store.displayBooks);
+
 document.getElementById('book-form').addEventListener('submit', function(e){
     const title = document.getElementById('title').value,
           author = document.getElementById('author').value,
@@ -63,7 +107,10 @@ document.getElementById('book-form').addEventListener('submit', function(e){
     if(title == '' || author == '' || isbn == ''){
         ui.showAlert('Por favor, preencha todos os Campos', 'error');
     } else{
-        ui.addBookToList(book)
+        ui.addBookToList(book);
+
+        Store.addBook(book);
+
         ui.showAlert('Livro adicionado', 'success');
         ui.clearFields();
     }
@@ -75,6 +122,8 @@ document.getElementById('book-list').addEventListener('click', function(e){
     const ui = new UI();
 
     ui.deleteBook(e.target);
+
+    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
 
     ui.showAlert('Livro Removido!', 'success');
     e.preventDefault();
